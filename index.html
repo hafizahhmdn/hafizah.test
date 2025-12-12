@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For You ❤️</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="container">
+    <h1 class="title">Hi Sayang ❤️</h1>
+
+    <p class="message">
+      I made this little website just for you.<br>
+      Thank you for always making me feel loved.<br>
+      You mean so much to me — more than I can put into words.<br><br>
+      I hope this makes you smile. ❤️
+    </p>
+
+    <button class="btn" onclick="reveal()">Click Me</button>
+
+    <div id="surprise" class="hidden">
+      <h2>You’re My Favourite Person 💐</h2>
+      <p>
+        Thank you for being patient, kind, and always there for me.<br>
+        I’m really lucky to have you.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function reveal() {
+      document.getElementById("surprise").classList.remove("hidden");
+    }
+  </script>
+
+</body>
+</html>
