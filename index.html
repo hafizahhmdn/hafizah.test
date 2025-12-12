@@ -3,36 +3,257 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>For You ❤️</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Birthday Letter</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #f7b6c8, #fcd3df);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    /* Floating Hearts */
+    .heart {
+      position: fixed;
+      bottom: -10px;
+      color: #ff6f91;
+      font-size: 20px;
+      animation: floatUp 6s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) translateX(0); opacity: 1; }
+      100% { transform: translateY(-120vh) translateX(20px); opacity: 0; }
+    }
+
+    /* Envelope */
+    .envelope-container {
+      position: relative;
+      width: 300px;
+      height: 200px;
+      cursor: pointer;
+    }
+
+    .envelope {
+      width: 100%;
+      height: 100%;
+      background: #ff9bb4;
+      position: absolute;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .flap {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #ff7f9e;
+      clip-path: polygon(0 0, 100% 0, 50% 60%);
+      transform-origin: top;
+      transition: transform 0.8s ease;
+    }
+
+    .letter {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 85%;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: top 1s ease;
+      opacity: 0;
+    }
+
+    .show-letter {
+      top: 10%;
+      opacity: 1;
+    }
+
+    .button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #ff6f91;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      display: none;
+    }
+
+    /* Message Box */
+    #messageBox {
+      display: none;
+      max-width: 480px;
+      background: white;
+      padding: 20px;
+      margin-top: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+      animation: fadeIn 1.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .image-box {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .image-box img {
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+
+    /* SECOND LETTER */
+    #secondLetterBtn {
+      display: none;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #ff5085;
+      color: white;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    #secondMessage {
+      display: none;
+      max-width: 480px;
+      background: white;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+      animation: fadeIn 1.5s ease;
+    }
+
+    /* Mobile Friendly */
+    @media (max-width: 480px) {
+      .envelope-container { transform: scale(0.85); }
+      body { padding: 20px; height: auto; min-height: 100vh; }
+    }
+  </style>
 </head>
 <body>
 
-  <div class="container">
-    <h1 class="title">Hi Sayang ❤️</h1>
+  <!-- Background Music -->
+  <audio autoplay loop>
+    <source src="yourmusic.mp3" type="audio/mpeg" />
+  </audio>
 
-    <p class="message">
-      I made this little website just for you.<br>
-      Thank you for always making me feel loved.<br>
-      You mean so much to me — more than I can put into words.<br><br>
-      I hope this makes you smile. ❤️
-    </p>
+  <!-- Floating Hearts Script -->
+  <script>
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "❤";
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.animationDuration = 4 + Math.random() * 4 + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 8000);
+    }
+    setInterval(createHeart, 600);
+  </script>
 
-    <button class="btn" onclick="reveal()">Click Me</button>
-
-    <div id="surprise" class="hidden">
-      <h2>You’re My Favourite Person 💐</h2>
-      <p>
-        Thank you for being patient, kind, and always there for me.<br>
-        I’m really lucky to have you.
-      </p>
+  <!-- Envelope -->
+  <div class="envelope-container" id="envelopeBox">
+    <div class="envelope" id="envelope"></div>
+    <div class="flap" id="flap"></div>
+    <div class="letter" id="letter">
+      <p>My Love,</p>
+      <p>Click below to open your birthday letter 💌</p>
     </div>
   </div>
 
+  <button id="openMessage" class="button">Open Letter</button>
+
+  <div id="messageBox"></div>
+
+  <button id="secondLetterBtn">Open Another Surprise 💗</button>
+
+  <div id="secondMessage"></div>
+
   <script>
-    function reveal() {
-      document.getElementById("surprise").classList.remove("hidden");
-    }
+    const flap = document.getElementById("flap");
+    const letter = document.getElementById("letter");
+    const openBtn = document.getElementById("openMessage");
+    const messageBox = document.getElementById("messageBox");
+    const secondBtn = document.getElementById("secondLetterBtn");
+    const secondMsg = document.getElementById("secondMessage");
+
+    document.getElementById("envelopeBox").onclick = () => {
+      flap.style.transform = "rotateX(180deg)";
+      letter.classList.add("show-letter");
+      setTimeout(() => openBtn.style.display = "block", 1200);
+    };
+
+    openBtn.onclick = () => {
+      const msg = `
+        <div class="image-box">
+          <img src="yourphoto.jpg" alt="us photo" />
+        </div>
+        <h2>Happy Birthday, My Love 🎉💕</h2>
+        <p>From the moment I met you, my days have been softer, happier, and more meaningful.</p>
+        <p>You deserve every good thing this world can offer, and I will always do my best to give you joy, comfort, and love.</p>
+        <p>Today is special because <b>you</b> are special.</p>
+
+        <h3>🌷 My Birthday Wishes for You</h3>
+        <p>I wish for your heart to always feel light. I wish for your dreams to feel closer. I wish for your days to be filled with peace, laughter, and warmth.</p>
+        <p>And I wish to be by your side through it all.</p>
+
+        <h3>🎁 Our Birthday Date Plan</h3>
+        <ul>
+          <li>💖 A surprise little gift when we meet</li>
+          <li>🍽️ Dinner at your favorite spot</li>
+          <li>🌌 A quiet walk together after</li>
+          <li>📸 A cute photo session to keep the memories</li>
+        </ul>
+
+        <p>I love you endlessly. 💗</p>
+      `;
+
+      messageBox.innerHTML = msg;
+      messageBox.style.display = "block";
+      openBtn.style.display = "none";
+
+      setTimeout(() => {
+        secondBtn.style.display = "block";
+      }, 1200);
+    };
+
+    secondBtn.onclick = () => {
+      const msg2 = `
+        <h2>One More Letter for You 💌</h2>
+        <p>If I could put into words how much you mean to me, I would need more than a lifetime.</p>
+        <p>You make my world softer. You make my days brighter. You make everything feel worth it.</p>
+        <p>I hope today makes you feel as loved as you make me feel every single day.</p>
+        <p>Happy Birthday, my heart. 💖</p>
+      `;
+
+      secondMsg.innerHTML = msg2;
+      secondMsg.style.display = "block";
+      secondBtn.style.display = "none";
+    };
   </script>
 
 </body>
